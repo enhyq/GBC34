@@ -26,7 +26,7 @@ int main(void) {
         cin >> size;
         cout << "size enterd!" << endl;
         cin >> list;
-        cout << "list enterd!" << endl;
+        cout << "list enterd!" << endl; 
 
         int list_size = list.size();
         int front=1, back=list_size-1;
