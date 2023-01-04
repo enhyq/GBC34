@@ -4,6 +4,8 @@
         "xstring": "cpp",
         "cstdlib": "cpp",
         "vector": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "ios": "cpp",
+        "xiosbase": "cpp"
     }
 }

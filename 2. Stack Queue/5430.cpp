@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <sstream>
 
 using namespace std;
 
@@ -9,10 +8,6 @@ using namespace std;
 // there are 1 ~ 100,000 test cases
 // 0 ~ 100,000 number of elements
 // + need to parse the numbers 
-
-//
-
-vector<string> split(string input, char delimiter);
 
 int main(void) {
     ios::sync_with_stdio(false); cin.tie(0);
@@ -23,72 +18,49 @@ int main(void) {
     string command;
     int size;
     string list;
+    // 01    67
+    // [1,2,3]
     while(T--) {
         cin >> command;
+        cout << "command entered!" << endl;
         cin >> size;
-
-        int D_cnt = 0;
-
+        cout << "size enterd!" << endl;
         cin >> list;
-        list.erase(list.end()-1); // remove '[' and ']'
-        list.erase(list.begin());
-        vector<string> result = split(list, ',');
-        
-        bool is_reverse = false;
-        vector<string>::iterator iter;
-        vector<string>::reverse_iterator r_iter;
+        cout << "list enterd!" << endl;
 
-        bool error_flag = false;
+        int list_size = list.size();
+        int front=1, back=list_size-1;
+        bool is_rev = false, error_flag = false;
 
-        for(int i=0; i<command.length(); i++){
-            if(command[i] == 'R') {
-                is_reverse = !is_reverse;
-            } else if (command[i] == 'D') {
-                // error case
-                if(result.size() == 0) {
+        cout << "list size is: " << list_size << endl;
+        cout << "command length is: " << command.length() << endl;
+
+        for(int i=0; i < command.length(); i++) {
+            if(command[i] == 'D') {
+                if(is_rev) back -= 2;
+                else front += 2;
+                if(front >= list_size || back <= 0 || front > back) {
+                    // error case
                     error_flag = true;
                     break;
                 }
-
-                if(!is_reverse) iter = result.begin();
-                else iter = result.end()-1;
-
-                result.erase(iter);
-            }
+            } else if (command[i] == 'R') is_rev = !is_rev;
+            cout << "iter " << i << endl;
         }
-        if(error_flag) cout << "error" << '\n';
+        // cout << "front " << front << "   back " << back << '\n'; // 뒤에 \n을 넣으면 출력이 안되는데 왜 그럴까
+        cout << "front " << front << "   back " << back << endl;
+
+        if(error_flag) cout << "error" << endl;
         else {
             cout << '[';
-            if(is_reverse){
-                r_iter = result.rbegin();
-                for( ; r_iter != result.rend(); r_iter++){
-                    if(r_iter != result.rbegin()) cout << ',';
-                    cout << *(r_iter);
-                }
-            } else {
-                iter = result.begin();
-                for( ; iter != result.end(); iter++){
-                    if(iter != result.begin()) cout << ',';
-                    cout << *(iter);
-                }
+            if(front+1 != back) {
+                if(!is_rev) for(int i=max(front,1); i<back; i++) cout << list[i];
+                else        for(int i=back-1; i>=max(front,1); i--) cout << list[i];
             }
-            cout << ']' << '\n';
+            cout << "]" << endl;
         }
-        
+        cout << "hi" << endl;
     }
 
     return 0;
-}
-
-// code from https://ssungkang.tistory.com/entry/C-string-%EB%AC%B8%EC%9E%90%EC%97%B4-%EB%82%98%EB%88%84%EB%8A%94-split
-vector<string> split(string input, char delimiter) {
-    vector<string> answer;
-    stringstream ss(input);
-    string temp;
- 
-    while (getline(ss, temp, delimiter)) {
-        answer.push_back(temp);
-    }
- 
-    return answer;
 }
