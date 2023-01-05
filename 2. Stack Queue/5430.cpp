@@ -18,48 +18,81 @@ int main(void) {
     string command;
     int size;
     string list;
-    // 01    67
-    // [1,2,3]
+
     while(T--) {
+        // cout << "command: ";
         cin >> command;
-        cout << "command entered!" << endl;
+        // cout << "size : ";
         cin >> size;
-        cout << "size enterd!" << endl;
+        // cout << "list: ";
         cin >> list;
-        cout << "list enterd!" << endl; 
 
         int list_size = list.size();
         int front=1, back=list_size-1;
         bool is_rev = false, error_flag = false;
 
-        cout << "list size is: " << list_size << endl;
-        cout << "command length is: " << command.length() << endl;
-
         for(int i=0; i < command.length(); i++) {
             if(command[i] == 'D') {
                 if(is_rev) back -= 2;
                 else front += 2;
-                if(front >= list_size || back <= 0 || front > back) {
+
+                if(front-1 > back) {
                     // error case
                     error_flag = true;
                     break;
                 }
+
+                if(is_rev) { 
+                    if(list[back] != '[') {
+                        // while(list[back] != '[' || list[back] != ',') back--;
+                        // 위의 코드를 사용하면 segmentation fault가 뜬다... why?
+                        // && 를 써야 한다
+                        while(1) {
+                            if(list[back] == '[') break; 
+                            if(list[back] == ',') break;
+                            back--;
+                        }
+                    }
+                } else {
+                    if(list[front-1] != ']') {
+                        while(1) {
+                            if(list[front-1] == ',') break;
+                            if(list[front-1] == ']') break;
+                            front++;
+                        }
+                    }
+                }
+            
             } else if (command[i] == 'R') is_rev = !is_rev;
-            cout << "iter " << i << endl;
         }
-        // cout << "front " << front << "   back " << back << '\n'; // 뒤에 \n을 넣으면 출력이 안되는데 왜 그럴까
-        cout << "front " << front << "   back " << back << endl;
+        // cout << "front " << front << "   back " << back << '\n'; // 뒤에 \n을 넣으면 출력이 안되는데 왜 그럴까 -> windows에서만 문제가 생긴다
+        // 윈도우에서는 \n을 출력한 이후에 다른 출력물들이 나오지 않는다
+        // cout << "front " << front << "   back " << back << endl;
 
         if(error_flag) cout << "error" << endl;
         else {
+            // cout << "front: " << front << "  back: " << back << endl;
             cout << '[';
-            if(front+1 != back) {
-                if(!is_rev) for(int i=max(front,1); i<back; i++) cout << list[i];
-                else        for(int i=back-1; i>=max(front,1); i--) cout << list[i];
+            if(!is_rev) for(int i=front; i<back; i++) cout << list[i];
+            else {
+                int cnt = 0;
+                for(int i=back-1; i>=front; i--) {
+                    if(list[i] != '[' && list[i] != ',') {
+                        cnt++;
+                    } else {
+                        for(int j=1; j<=cnt; j++) {
+                            cout << list[i+j];
+                        }
+                        cout << list[i];
+                        cnt = 0;
+                    }
+                }
+                for(int j=0; j<cnt; j++) {
+                    cout << list[front+j];
+                }
             }
             cout << "]" << endl;
         }
-        cout << "hi" << endl;
     }
 
     return 0;
