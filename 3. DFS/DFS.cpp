@@ -8,7 +8,7 @@ vector<int> graph[10001];
 bool visited[10001];
 
 void DFS(int start) {
-    if( visited[start] ) return ;  // if not yet visited
+    // if( visited[start] ) return ;  // if not yet visited
 
     visited[start] = true;
     cout << start << ' ';
