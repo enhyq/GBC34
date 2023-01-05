@@ -30,11 +30,18 @@ void print_recur(char s[][1025], int n, char c, int &w) {
         w *= 2;
         print_recur(s, n-1, c, w);
     }
-    
 }
 
 void print_func(int n, char c){
-    char s[1024][1025] = {'-', }; // max size
+    char s[1024][1025] = {' ', }; // max size
+    
+    // 초기화!!
+    for(int i=0; i<1024; i++) {
+        for(int j=0; j<1025; j++) {
+            s[i][j] = ' ';
+        }
+    }
+
     s[0][0] = c;
     int w = 1;
     print_recur(s, n, c, w);
@@ -46,7 +53,7 @@ int main(void) {
     int t;
     cin >> t;
     print_func(t, '*');
-    // cout << '\n';
+    cout << '\n';
 
     // Q. loop안에서 recursion으로 출력하면 잘 안된다..?
 
