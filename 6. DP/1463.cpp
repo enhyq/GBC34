@@ -15,10 +15,17 @@ int main(void) {
 
 
     // bottom-up approach
+    // for(int i=4; i<=N; i++) {
+    //     if(i%3==0) m[i] = m[i/3] + 1;
+    //     if(i%2==0) m[i] ? min(m[i/3], m[i/2])+1 : m[i/2]+1;
+    //     m[i] = m[i] ? min(m[i], m[i-1]+1) : m[i-1]+1; // N == 1인 경우 아예 for문을 돌지 않기 때문에 상관 없다
+    // }
+    // 반례 642 -> 10인데 12가 나온다
+
     for(int i=4; i<=N; i++) {
-        if(i%3==0) m[i] = m[i/3] + 1;
-        if(i%2==0) m[i] ? min(m[i], m[i/2]+1) : m[i/2]+1;
-        m[i] = m[i] ? min(m[i], m[i-1]+1) : m[i-1]+1; // N == 1인 경우 아예 for문을 돌지 않기 때문에 상관 없다
+        m[i] = m[i-1] + 1;
+        if(i%3 == 0) m[i] = min(m[i/3]+1, m[i]);
+        if(i%2 == 0) m[i] = min(m[i/2]+1, m[i]);
     }
 
     cout << m[N] << endl;
