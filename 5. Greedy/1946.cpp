@@ -12,30 +12,32 @@ int main(void) {
     int N;
 
     vector<pair<int, int> > v;
-    int a, b, count=0;
+
     while(T--) {
+        // initialize 
+        v.clear();
+
         cin >> N; // N(1 ≤ N ≤ 100,000)
-        int max_a, max_b;
-        for(int i=0; i<N; i++) {
+
+        for(int i=0, a, b; i<N; i++) {
             cin >> a >> b;
-            if(a==1) max_b = b;
-            if(b==1) max_a = a;
             v.push_back(make_pair(a, b));
         }
 
-        // a, b 어느 둘중 하나가 다른 a, b 보다 작지 않은 것 
-        // ???
-        // 일단 풀기
-        for(int i=0; i<N; i++) {
-            if(v[i].first <= max_a && v[i].second <= max_b){
+        sort(v.begin(), v.end());
+
+        int max = v[0].second;
+        int count = 1;
+        
+        for(int i=1; i<N; i++) {
+            if(v[i].second < max) {
+                max = v[i].second;
                 count++;
+                if(max == 1) break;
             }
         }
 
         cout << count << endl;
-
-        v.clear();
-        count=0;
     }
 
     return 0;
