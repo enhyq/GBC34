@@ -1,54 +1,35 @@
-#include <iostream>
+#include <iostream> 
 #include <vector>
+
+#define SIZE 100000
 
 using namespace std;
 
+int arr[SIZE];
+int m[SIZE];
 
 int main(void) {
     ios::sync_with_stdio(false); cin.tie(0);
 
-    int N;
-    cin >> N;
+    int n;
+    cin >> n;
 
-    int t;
-    vector<int> v;
-
-    // 모든 pos와 neg 숫자들은 합쳐서 넣는다
-    bool pos_streak = true;
-    int s = 0;
-    for(int i=0; i<N; i++) {
-        cin >> t;
-        if(t>=0){ // pos input
-            if(pos_streak) s += t;
-            else {
-                pos_streak = !pos_streak;
-                if(s) v.push_back(s);
-                // s = t;
-                s = 0;
-                v.push_back(t);
-            }
-        }
-        else { // neg input
-            if(!pos_streak) {
-                v.push_back(t);
-                // s += t;
-            }
-            else {
-                pos_streak = !pos_streak;
-                if(s) v.push_back(s);
-                s = t;
-            }
-        }
+    for(int i=0; i<n; i++) {
+        cin >> arr[i];
     }
-    if(s) v.push_back(s);
 
-    // neg 숫자 합치면 안된다
+    m[0] = arr[0];
 
-    // debug
-    for(int i=0; i<v.size(); i++) {
-        cout << v[i] << " ";
+    for(int i=1; i<n; i++) {
+        m[i] = max(m[i-1]+arr[i], arr[i]);
     }
-    cout << '\n';
+
+    int max = -1000;
+    for(int i=0; i<n; i++) {
+        if(m[i] > max) max = m[i];
+    }
+
+    cout << max << endl;
 
 
     return 0;
